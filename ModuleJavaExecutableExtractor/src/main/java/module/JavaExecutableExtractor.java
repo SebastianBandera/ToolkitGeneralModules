@@ -26,7 +26,7 @@ public class JavaExecutableExtractor implements RunnableModule, StoppableModule 
 	private final String       packageTokens       = "package ";
 	private final int          packageTokensLen    = packageTokens.length();
 	
-	private boolean pause;
+	private boolean stop;
 	
 	public static void main(String[] args) {
 		new JavaExecutableExtractor().runAction();
@@ -34,7 +34,7 @@ public class JavaExecutableExtractor implements RunnableModule, StoppableModule 
 	
 	public JavaExecutableExtractor() {
 		clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		pause     = false;
+		stop     = false;
 	}
 	
 	public String getIdentifier() {
@@ -46,7 +46,8 @@ public class JavaExecutableExtractor implements RunnableModule, StoppableModule 
 	}
 
 	public void runAction() {
-		while (!pause) {
+		stop = false;
+		while (!stop) {
 			try {
 				sleep(100);
 				Transferable tr = clipboard.getContents(null);
@@ -245,11 +246,11 @@ public class JavaExecutableExtractor implements RunnableModule, StoppableModule 
 
 
 	public void requestStop(boolean closingModule) {
-		pause = true;
+		stop = true;
 	}
 
 	public boolean isStopRequested() {
-		return pause;
+		return stop;
 	}
 
 }
